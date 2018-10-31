@@ -1,0 +1,81 @@
+ext.versionName = '1.0'
+ext.versionCode = 1
+ext.apiVersionCode = 11
+
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    buildToolsVersion prop("version.build.tools")
+    compileSdkVersion prop("version.sdk.max").toInteger()
+
+    defaultConfig {
+        applicationId "au.com.pjwin.photolist"
+        minSdkVersion prop("version.sdk.min").toInteger()
+        targetSdkVersion prop("version.sdk.max").toInteger()
+        versionCode project.versionCode
+        versionName project.versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField 'String', 'SCHEMA', '"https"'
+        buildConfigField 'String', 'HOST', '"dl.dropboxusercontent.com"'
+        buildConfigField 'int', 'PORT', '443'
+        buildConfigField 'String', 'CONTEXT_ROOT', '"s/2iodh4vg0eortkl"'
+        buildConfigField 'long', 'CONNECTION_TIMEOUT', '30'
+        buildConfigField 'long', 'READ_TIMEOUT', '70'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    android {
+        compileOptions {
+            sourceCompatibility 1.8
+            targetCompatibility 1.8
+        }
+    }
+
+    testOptions {
+        unitTests {
+            all {
+                jvmArgs '-noverify'
+            }
+            returnDefaultValues true
+            includeAndroidResources true
+        }
+    }
+}
+
+dependencies {
+    def glideVersion = "4.8.0"
+    def mockitoVersion = prop("version.mockito")
+    def robolectricVersion = prop("version.robolectric")
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':common')
+
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    //glide
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
+    testImplementation "org.robolectric:shadows-multidex:$robolectricVersion"
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
