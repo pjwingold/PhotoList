@@ -6,11 +6,10 @@ import au.com.pjwin.commonlib.ui.adapter.RecyclerViewHolder
 import au.com.pjwin.photolist.R
 import au.com.pjwin.photolist.databinding.FactItemBinding
 import au.com.pjwin.photolist.model.Fact
-import au.com.pjwin.photolist.model.FactResponse
 import com.bumptech.glide.Glide
 
-class FactAdapter(private val context: Context, factResponse: FactResponse) :
-    RecyclerListAdapter<Fact, FactItemBinding, RecyclerViewHolder>(context, factResponse.rows) {
+class FactAdapter(private val context: Context, factList: List<Fact>) :
+    RecyclerListAdapter<Fact, FactItemBinding, RecyclerViewHolder>(context, factList) {
 
     override fun layoutId() = R.layout.fact_item
 
@@ -20,12 +19,10 @@ class FactAdapter(private val context: Context, factResponse: FactResponse) :
         }
         binding.fact = data
 
-        data.imageHref?.let {
-            Glide.with(context)
-                .load(it)
-                //todo add placeholder
-                //.apply(RequestOptions().placeholder())
-                .into(binding.image)
-        }
+        Glide.with(context)
+            .load(data.imageHref)
+            //todo add placeholder
+            //.apply(RequestOptions().placeholder())
+            .into(binding.image)
     }
 }
