@@ -7,3 +7,6 @@ RecyclerView: ListView replacement
 Glide: image loading lib
 
 Architecture: MVVM
+
+
+Dependency: check out/clone CommonLib
